@@ -24,7 +24,7 @@ while (true)
     {
         for (int j = 0; j < 25; j++)
         {
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write(Circle);
         }
         Console.WriteLine();
