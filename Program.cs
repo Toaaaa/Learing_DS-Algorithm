@@ -1,5 +1,10 @@
 ﻿
 ////
+using class1_1;
+
+///
+Board board = new Board();
+board.Initialize();
 Console.CursorVisible = false;
 
 int LastTick = 0;
