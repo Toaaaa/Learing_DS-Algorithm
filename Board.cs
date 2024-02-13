@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace class1_1
 {
-    class MyList<T>
+    /*class MyList<T>
     {
         const int DEFUALT_SIZE = 1;
         T[] _data = new T[DEFUALT_SIZE];
@@ -44,25 +44,78 @@ namespace class1_1
             _data[Count - 1] = default(T); //끝 데이터는 해당 데이터를 해당 형태에 맞는 기본값으로 초기화해줌.
             Count--;
         }
-    }
+    }*/
 
-   class Board
+   class MyLinkedListNode<T>
+    {
+        public T Data;
+        public MyLinkedListNode<T> Next;
+        public MyLinkedListNode<T> Prev;
+    }
+    
+    class MyLinkedList<T>
+    {
+        public MyLinkedListNode<T> Head = null;
+        public MyLinkedListNode<T> Tail = null;
+        public int Count = 0;
+
+        public MyLinkedListNode<T> AddLast(T data)//마지막 순번 방에 T 를추가 //O(1)
+        {
+            MyLinkedListNode<T> newRoom = new MyLinkedListNode<T>();
+            newRoom.Data = data;
+
+            if(Head == null) //만약 방이 하나도 없으면 , 새로추가하는 방이 head가 됨
+            {
+                Head = newRoom;
+            }
+
+            if(Tail != null) //tail 방 확인후, 서로 연결해 주는 작업
+            {
+                Tail.Next = newRoom;
+                newRoom.Prev = Tail;
+            }
+
+            Tail = newRoom;
+            Count++;
+            return newRoom;
+
+        }
+
+        public void Remove(MyLinkedListNode<T> room)//O(1)
+        {
+            if(Head == room) //지우려는 방이 head 인 경우, 다음방을 head로 지정
+            {
+                Head = Head.Next;
+            }
+            if(Tail == room) //지우려는 방이 tail 인경우, 이전방을 tail로 지정
+            {
+                Tail = Tail.Prev;
+            }
+            if(room.Prev != null)
+            {
+                room.Prev.Next = room.Next;
+            }
+            if(room.Next != null)
+            {
+                room.Next.Prev = room.Prev; 
+            }
+        }
+    }
+    class Board
     {
         public int[] _data = new int[25];//배열 , 연속된 방을 사용한다
-        public MyList<int> _data2 = new MyList<int>();//동적 배열 >>처음부터 여유있게 배열칸을 보유, 유동적으로 활용가능
-        public LinkedList<int> _data3 = new LinkedList<int>();//연결 리스트
-        //123
+        //public MyList<int> _data2 = new MyList<int>();//동적 배열 >>처음부터 여유있게 배열칸을 보유, 유동적으로 활용가능
+        public MyLinkedList<int> _data3 = new MyLinkedList<int>();//연결 리스트
+        
         public void Initialize()
         {
-            _data2.Add(101);
-            _data2.Add(102);
-            _data2.Add(103);
-            _data2.Add(104);
-            _data2.Add(105);
+            _data3.AddLast(101);
+            _data3.AddLast(102);
+            MyLinkedListNode<int> node = _data3.AddLast(103);
+            _data3.AddLast(104);
+            _data3.AddLast(105);
 
-            int temp = _data2[2];
-
-            _data2.RemoveAt(2); //3번째 데이터를 삭제 (0,1,2,3,4)
-        }
+            _data3.Remove(node);
+         }
     }
 }
