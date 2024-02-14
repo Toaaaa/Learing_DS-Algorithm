@@ -4,12 +4,12 @@ using class1_1;
 
 ///
 Board board = new Board();
-board.Initialize();
+board.Initialize(25);
 Console.CursorVisible = false;
 
 int LastTick = 0;
 const int WaitTick = 1000 / 30;
-const char Circle = '\u25cf';
+
 
 while (true)
 {
@@ -24,15 +24,8 @@ while (true)
     #endregion
 
     Console.SetCursorPosition(0, 0);
+    board.Render();
     
-    for(int i=0; i < 25; i++)
-    {
-        for (int j = 0; j < 25; j++)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write(Circle);
-        }
-        Console.WriteLine();
-    }
+    
        
 }

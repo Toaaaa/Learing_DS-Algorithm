@@ -103,19 +103,70 @@ namespace class1_1
     }
     class Board
     {
-        public int[] _data = new int[25];//배열 , 연속된 방을 사용한다
+        const char Circle = '\u25cf';
+        public TileType[,] _tile; //배열 , 연속된 방을 사용한다
         //public MyList<int> _data2 = new MyList<int>();//동적 배열 >>처음부터 여유있게 배열칸을 보유, 유동적으로 활용가능
-        public MyLinkedList<int> _data3 = new MyLinkedList<int>();//연결 리스트
-        
-        public void Initialize()
-        {
-            _data3.AddLast(101);
-            _data3.AddLast(102);
-            MyLinkedListNode<int> node = _data3.AddLast(103);
-            _data3.AddLast(104);
-            _data3.AddLast(105);
+        //public MyLinkedList<int> _data3 = new MyLinkedList<int>();//연결 리스트
 
-            _data3.Remove(node);
-         }
+        public int _size;
+
+        public enum TileType
+        {
+            Wall,
+            Empty,
+
+
+        }
+        
+        public void Initialize(int size)
+        {
+            _tile = new TileType[size, size];
+            _size = size;
+
+            for (int y=0; y< _size; y++)
+            {
+                for (int x = 0; x < _size; x++)
+                {
+                    if (x == 0 || x == _size -1 || y == 0 || y == size - 1)
+                    {
+                        _tile[y, x] = TileType.Wall;
+                    }
+                    else
+                    {
+                        _tile[y,x] = TileType.Empty;
+                    }
+                }
+            }
+        }
+
+        public void Render()
+        {
+            ConsoleColor prevColor = Console.ForegroundColor;
+            for (int y = 0; y < _size; y++)
+            {
+                for (int x = 0; x < _size; x++)
+                {
+                    Console.ForegroundColor = GetTileColor(_tile[y, x]);
+                    Console.Write(Circle);
+                }
+                Console.WriteLine();
+            }
+            Console.ForegroundColor = prevColor;
+        }
+
+        ConsoleColor GetTileColor(TileType type)
+        {
+            switch (type)
+            {               
+                case TileType.Wall:
+                    return ConsoleColor.Red;
+
+                case TileType.Empty:
+                    return ConsoleColor.Cyan;
+
+                default:
+                    return ConsoleColor.Cyan;
+            }
+        }
     }
 }
