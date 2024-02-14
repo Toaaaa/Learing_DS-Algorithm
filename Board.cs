@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -126,17 +127,22 @@ namespace class1_1
             _tile = new TileType[size, size];
             _size = size;
 
-            for (int y=0; y< _size; y++) //미로의 길을 막는 작업
+            GenerateByBinaryTree();
+        }
+
+        void GenerateByBinaryTree()
+        {
+            for (int y = 0; y < _size; y++) //미로의 길을 막는 작업
             {
                 for (int x = 0; x < _size; x++)
                 {
-                    if (x % 2 ==0 || y % 2 ==0)
+                    if (x % 2 == 0 || y % 2 == 0)
                     {
                         _tile[y, x] = TileType.Wall;
                     }
                     else
                     {
-                        _tile[y,x] = TileType.Empty;
+                        _tile[y, x] = TileType.Empty;
                     }
                 }
             }
@@ -150,35 +156,34 @@ namespace class1_1
                     {
                         continue;
                     }
-                    if(y == _size  -2 && x == _size - 2)//마지막 타일
+                    if (y == _size - 2 && x == _size - 2)//마지막 타일
                     {
                         continue;
                     }
 
-                    if (y == size - 2)
+                    if (y == _size - 2)
                     {
                         _tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
                         continue;
                     }
-                    if (x == size - 2)
+                    if (x == _size - 2)
                     {
-                        _tile[y+1, x] = TileType.Empty;//우측으로 길 뚫기
+                        _tile[y + 1, x] = TileType.Empty;//우측으로 길 뚫기
                         continue;
                     }
                     //rand.Next(0,2);  //0또는 1중 랜덤 값 배출
-                    if (rand.Next(0,2) == 0)
+                    if (rand.Next(0, 2) == 0)
                     {
-                        _tile[y, x+1] = TileType.Empty;//우측으로 길 뚫기
+                        _tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
                     }
                     else
                     {
-                        _tile[y+1, x ] = TileType.Empty;//아래로 길 뚫기
+                        _tile[y + 1, x] = TileType.Empty;//아래로 길 뚫기
                     }
-                    
+
                 }
             }
         }
-
         public void Render()
         {
             ConsoleColor prevColor = Console.ForegroundColor;
