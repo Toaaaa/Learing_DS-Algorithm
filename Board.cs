@@ -9,8 +9,8 @@ namespace class1_1
 {
     /*class MyList<T>
     {
-        const int DEFUALT_SIZE = 1;
-        T[] _data = new T[DEFUALT_SIZE];
+        const int DEFUALTSize = 1;
+        T[] _data = new T[DEFUALTSize];
         public int Count = 0; //실제로 사용중인 데이터 개수
         public int Capacity { get { return _data.Length; } } //예약된 데이터 개수
         
@@ -105,11 +105,11 @@ namespace class1_1
     class Board
     {
         const char Circle = '\u25cf';
-        public TileType[,] _tile; //배열 , 연속된 방을 사용한다
+        public TileType[,] Tile { get; private set; } //배열 , 연속된 방을 사용한다
         //public MyList<int> _data2 = new MyList<int>();//동적 배열 >>처음부터 여유있게 배열칸을 보유, 유동적으로 활용가능
         //public MyLinkedList<int> _data3 = new MyLinkedList<int>();//연결 리스트
 
-        public int _size;
+        public int Size { get; private set; }
 
         public enum TileType
         {
@@ -118,14 +118,15 @@ namespace class1_1
 
 
         }
-        
-        public void Initialize(int size)
+        Player _player;
+
+        public void Initialize(int size, Player player)
         {
             if (size % 2 == 0 )
                 return;
-            
-            _tile = new TileType[size, size];
-            _size = size;
+            _player = player;
+            Tile = new TileType[size, size];
+            Size = size;
 
             //GenerateByBinaryTree();
             GenerateBySideWinder();
@@ -133,57 +134,57 @@ namespace class1_1
 
         void GenerateBySideWinder()
         {
-            for (int y = 0; y < _size; y++) //미로의 길을 막는 작업
+            for (int y = 0; y < Size; y++) //미로의 길을 막는 작업
             {
-                for (int x = 0; x < _size; x++)
+                for (int x = 0; x < Size; x++)
                 {
                     if (x % 2 == 0 || y % 2 == 0)
                     {
-                        _tile[y, x] = TileType.Wall;
+                        Tile[y, x] = TileType.Wall;
                     }
                     else
                     {
-                        _tile[y, x] = TileType.Empty;
+                        Tile[y, x] = TileType.Empty;
                     }
                 }
             }
 
             Random rand = new Random();//랜덤
 
-            for (int y = 0; y < _size; y++) //대각선 아래로 길을 뚫는 작업 (empty 타일 한정)
+            for (int y = 0; y < Size; y++) //대각선 아래로 길을 뚫는 작업 (empty 타일 한정)
             {
                 int count = 0;
-                for (int x = 0; x < _size; x++)
+                for (int x = 0; x < Size; x++)
                 {
                     if (x % 2 == 0 || y % 2 == 0) //벽
                     {
                         continue;
                     }
-                    if (y == _size - 2 && x == _size - 2)//마지막 타일
+                    if (y == Size - 2 && x == Size - 2)//마지막 타일
                     {
                         continue;
                     }
 
-                    if (y == _size - 2)
+                    if (y == Size - 2)
                     {
-                        _tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
+                        Tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
                         continue;
                     }
-                    if (x == _size - 2)
+                    if (x == Size - 2)
                     {
-                        _tile[y + 1, x] = TileType.Empty;//우측으로 길 뚫기
+                        Tile[y + 1, x] = TileType.Empty;//우측으로 길 뚫기
                         continue;
                     }
                     //rand.Next(0, 2);  //0또는 1중 랜덤 값 배출
                     if (rand.Next(0, 2) == 0)
                     {
-                        _tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
+                        Tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
                         count++;//우측으로 뚫은 횟수 카운트
                     }
                     else
                     {
                         int randomIndex = rand.Next(0, count);
-                        _tile[y + 1, x - randomIndex *2] = TileType.Empty;//아래로 길 뚫기
+                        Tile[y + 1, x - randomIndex *2] = TileType.Empty;//아래로 길 뚫기
                         count = 1; //1로 리셋
                     }
 
@@ -192,53 +193,53 @@ namespace class1_1
         }
         void GenerateByBinaryTree()
         {
-            for (int y = 0; y < _size; y++) //미로의 길을 막는 작업
+            for (int y = 0; y < Size; y++) //미로의 길을 막는 작업
             {
-                for (int x = 0; x < _size; x++)
+                for (int x = 0; x < Size; x++)
                 {
                     if (x % 2 == 0 || y % 2 == 0)
                     {
-                        _tile[y, x] = TileType.Wall;
+                        Tile[y, x] = TileType.Wall;
                     }
                     else
                     {
-                        _tile[y, x] = TileType.Empty;
+                        Tile[y, x] = TileType.Empty;
                     }
                 }
             }
 
             Random rand = new Random();
-            for (int y = 0; y < _size; y++) //대각선 아래로 길을 뚫는 작업 (empty 타일 한정)
+            for (int y = 0; y < Size; y++) //대각선 아래로 길을 뚫는 작업 (empty 타일 한정)
             {
-                for (int x = 0; x < _size; x++)
+                for (int x = 0; x < Size; x++)
                 {
                     if (x % 2 == 0 || y % 2 == 0) //벽
                     {
                         continue;
                     }
-                    if (y == _size - 2 && x == _size - 2)//마지막 타일
+                    if (y == Size - 2 && x == Size - 2)//마지막 타일
                     {
                         continue;
                     }
 
-                    if (y == _size - 2)
+                    if (y == Size - 2)
                     {
-                        _tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
+                        Tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
                         continue;
                     }
-                    if (x == _size - 2)
+                    if (x == Size - 2)
                     {
-                        _tile[y + 1, x] = TileType.Empty;//우측으로 길 뚫기
+                        Tile[y + 1, x] = TileType.Empty;//우측으로 길 뚫기
                         continue;
                     }
                     //rand.Next(0,2);  //0또는 1중 랜덤 값 배출
                     if (rand.Next(0, 2) == 0)
                     {
-                        _tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
+                        Tile[y, x + 1] = TileType.Empty;//우측으로 길 뚫기
                     }
                     else
                     {
-                        _tile[y + 1, x] = TileType.Empty;//아래로 길 뚫기
+                        Tile[y + 1, x] = TileType.Empty;//아래로 길 뚫기
                     }
 
                 }
@@ -247,11 +248,18 @@ namespace class1_1
         public void Render()
         {
             ConsoleColor prevColor = Console.ForegroundColor;
-            for (int y = 0; y < _size; y++)
+            for (int y = 0; y < Size; y++)
             {
-                for (int x = 0; x < _size; x++)
+                for (int x = 0; x < Size; x++)
                 {
-                    Console.ForegroundColor = GetTileColor(_tile[y, x]);
+                    //Player 좌표를 가져와 그좌표와 현재 y,x가 일치하는 경우 플레이어의 색상으로 표시
+                    if (y == _player.PosY && x == _player.PosX)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    else
+                        Console.ForegroundColor = GetTileColor(Tile[y, x]);
+
                     Console.Write(Circle);
                 }
                 Console.WriteLine();
