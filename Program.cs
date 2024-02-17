@@ -6,7 +6,7 @@ using class1_1;
 Board board = new Board();
 Player player = new Player();   
 board.Initialize(25,player);
-player.initialize(1, 1, board.Size -2, board.Size -2, board);
+player.initialize(1, 1, board);
 Console.CursorVisible = false;
 
 int LastTick = 0;
@@ -34,6 +34,7 @@ while (true)
     //렌더링
     Console.SetCursorPosition(0, 0);
     board.Render();
+    Console.WriteLine("123");
     
     
        

@@ -110,6 +110,8 @@ namespace class1_1
         //public MyLinkedList<int> _data3 = new MyLinkedList<int>();//연결 리스트
 
         public int Size { get; private set; }
+        public int DestY { get; private set; }
+        public int DestX { get; private set; } 
 
         public enum TileType
         {
@@ -127,6 +129,8 @@ namespace class1_1
             _player = player;
             Tile = new TileType[size, size];
             Size = size;
+            DestX = Size - 2;
+            DestY = Size - 2;
 
             //GenerateByBinaryTree();
             GenerateBySideWinder();
@@ -256,6 +260,10 @@ namespace class1_1
                     if (y == _player.PosY && x == _player.PosX)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    else if (y == DestY && x == DestX)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                     }
                     else
                         Console.ForegroundColor = GetTileColor(Tile[y, x]);
