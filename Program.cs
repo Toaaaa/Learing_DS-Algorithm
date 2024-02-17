@@ -34,7 +34,6 @@ while (true)
     //렌더링
     Console.SetCursorPosition(0, 0);
     board.Render();
-    Console.WriteLine("123");
     
     
        
