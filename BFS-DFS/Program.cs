@@ -104,7 +104,7 @@ namespace Learning1
         }
     }
 
-    class Program1
+    /*class Program1
     {
         static void Main(string[] args)
         {
@@ -119,5 +119,5 @@ namespace Learning1
             graph.BFS(0);
 
         }
-    }
+    }*/
 }

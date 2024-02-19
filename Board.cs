@@ -111,7 +111,8 @@ namespace class1_1
 
         public int Size { get; private set; }
         public int DestY { get; private set; }
-        public int DestX { get; private set; } 
+        public int DestX { get; private set; }
+        Player _player;
 
         public enum TileType
         {
@@ -120,7 +121,6 @@ namespace class1_1
 
 
         }
-        Player _player;
 
         public void Initialize(int size, Player player)
         {
@@ -154,6 +154,7 @@ namespace class1_1
             }
 
             Random rand = new Random();//랜덤
+
 
             for (int y = 0; y < Size; y++) //대각선 아래로 길을 뚫는 작업 (empty 타일 한정)
             {
