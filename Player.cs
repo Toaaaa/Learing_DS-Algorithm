@@ -41,7 +41,63 @@ namespace class1_1
             PosY = posY;
             PosX = posX;
             _board = board;
-            //바라보는 방향 기준으로의 좌표 변화
+
+            BFS();
+            
+            
+        }
+
+        voic BFS()
+        {
+            int[] deltaY = new int[] { -1, 0, 1, 0};//위의 Dir과 같은 방식의 방향을 나타내는 배열
+            int[] deltaX = new int[] { 0, -1, 0, 1};
+
+            bool[,] found = new bool[_board.Size, _board.Size];
+            Pos[,] parent = new Pos[_board.Size, _board.Size];
+
+            Queue<Pos> q = new Queue<Pos>();
+            q.Enqueue(new Pos(PosY, PosX));
+            found[PosY, PosX] = true;
+            parent[PosY, PosX] = new Pos(PosY, PosX);  
+
+            while(q.Count > 0)
+            {
+                Pos pos = q.Dequeue();
+                int nowY = pos.Y;
+                int nowX = pos.X;
+
+                for(int i =0; i<4; i++)
+                {
+                    int nextY = nowY + deltaY[i];
+                    int nextX = nowX + deltaX[i];
+                    if(nextX < 0 || nextX >= _board.Size || nextY < 0 || nextY >= _board.Size) //갈수없는곳 or 범위 초과일떄
+                        continue;
+                    if (_board.Tile[nextY, nextX] == Board.TileType.Wall) //벽
+                        continue;
+                    if (found[nextY, nextX]) //이미 지나감
+                        continue;
+                    // 위 조건을 전부 통과시 처음 지나가는 점+ 갈수있는점
+                    q.Enqueue(new Pos(nextY, nextX)); //해당점 예약
+                    found[nextY, nextX] = true; //표시
+                    parent[nextY, nextX] = new Pos(nowY, nowX);
+                }
+            }
+
+            int y = _board.DestY;
+            int x = _board.DestX;
+            while (parent[y,x].Y !=y || parent[y,x].X != x)
+            {
+                _points.Add(new Pos(y, x));
+                Pos pos = parent[y, x];
+                y = pos.Y;
+                x = pos.X;
+            }
+            _points.Add(new Pos(y, x));
+            _points.Reverse();
+        }
+
+        void RightHand()
+        {
             int[] frontY = new int[] { -1, 0, 1, 0 }; //이것을 이용하면 코드를 간소화 시켜서 방향을 구현할 수있다
             int[] frontX = new int[] { 0, -1, 0, 1 };
             int[] rightY = new int[] { 0, -1, 0, 1 };
@@ -75,7 +131,6 @@ namespace class1_1
                 }
             }
         }
-
 
         const int Move_Tick = 100;
         int _SumTick = 0;
