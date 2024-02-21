@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Exercise //힙트리 연습
 {
-    class PriorityQueue<>
+    class PriorityQueue<T> where T : IComparable<T> // 인터페이스를 이용해 대소비교 가 가능한 type만 사용하게 제한
     {
-        List<int> _heap = new List<int>();
+        List<T> _heap = new List<T>();
 
-        public void Push(int data) //bigO >> (logN)
+        public void Push(T data) //bigO >> (logN)
         {
             //힙의 맨 끝에 새로운 데이터 삽입.
             _heap.Add(data);
@@ -17,10 +17,10 @@ namespace Exercise //힙트리 연습
             {
                 //부모보다 강한지 약한지 체크
                 int next = (now - 1) / 2;
-                if (_heap[now] < _heap[next])
+                if (_heap[now].CompareTo( _heap[next]) < 0)
                     break; //실패
 
-                int temp = _heap[now];
+                T temp = _heap[now];
                 _heap[now] = _heap[next];
                 _heap[next] = temp; //값 교체 코드
 
@@ -30,10 +30,10 @@ namespace Exercise //힙트리 연습
 
         }
 
-        public int Pop() //데이터 삭제
+        public T Pop() //데이터 삭제
         {
             // 반환할 데이터 따로 저장
-            int ret = _heap[0];
+            T ret = _heap[0];
 
             int lastIndex = _heap.Count - 1;
             _heap[0] = _heap[lastIndex];
@@ -50,16 +50,16 @@ namespace Exercise //힙트리 연습
 
                 int next = now;
 
-                if(left <= lastIndex && _heap[next] < _heap[left])
+                if(left <= lastIndex && _heap[next].CompareTo(_heap[left]) < 0)
                     next = left;    
 
-                if(right <= lastIndex && _heap[next] < _heap[right])
+                if(right <= lastIndex && _heap[next].CompareTo (_heap[right]) <0 )
                     next = right; //위 두 if문을 실행 하면 3개중 가장 큰 값이 부모가 된다.
 
                 if (next == now)
                     break;
                 // 두 값을 교체
-                int temp = _heap[now];
+                T temp = _heap[now];
                 _heap[now] = _heap[next];
                 _heap[next] = temp; //값 교체 코드
 
@@ -75,21 +75,33 @@ namespace Exercise //힙트리 연습
             return _heap.Count;
         }
     }
+    class Knight : IComparable<Knight>
+    {
+        public int ID { get; set; }
+
+        public int CompareTo(Knight? other)
+        {
+            if (ID == other.ID)
+                return 0;
+            return ID > other.ID ? 1 : -1;
+            
+        }
+    }
 
     class Program
     {
         static void Main(string[] args)
         {
-            PriorityQueue q = new PriorityQueue();
-            q.Push(20);
-            q.Push(10);
-            q.Push(30);
-            q.Push(90); 
-            q.Push(40);
+            PriorityQueue<Knight> q = new PriorityQueue<Knight>();
+            q.Push(new Knight() { ID = 20});
+            q.Push(new Knight() { ID = 30 });
+            q.Push(new Knight() { ID = 40 });
+            q.Push(new Knight() { ID = 10 }); 
+            q.Push(new Knight() { ID = 50 });
 
             while(q.Count() > 0)
             {
-                Console.WriteLine( q.Pop());
+                Console.WriteLine( q.Pop().ID);
             }
 
         }
