@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Exercise //힙트리 연습
 {
-    class PriorityQueue<int>
+    class PriorityQueue<>
     {
         List<int> _heap = new List<int>();
 
